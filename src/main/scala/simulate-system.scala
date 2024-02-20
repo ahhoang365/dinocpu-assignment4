@@ -94,6 +94,7 @@ object simulate_predefined_system {
       case "default" => ("pipelined-non-combin", "non-combinational", "non-combinational-port", 1)
       case "default-single-cycle" => ("single-cycle-non-combin", "non-combinational", "non-combinational-port", 1)
       case "single-cycle" => ("single-cycle", "combinational", "combinational-port", 0)
+      case "pipelined" => ("pipelined", "combinational", "combinational-port", 0)
       case "system1" => ("pipelined-non-combin", "non-combinational", "non-combinational-port", 30)
       case "system2" => ("pipelined-non-combin", "non-combinational", "non-combinational-port", 30)
       case "system3" => ("pipelined-non-combin", "non-combinational", "non-combinational-port", 30)

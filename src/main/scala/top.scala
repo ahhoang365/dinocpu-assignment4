@@ -29,6 +29,7 @@ class Top(val conf: CPUConfig) extends Module
     case "default" => build_default_system()
     case "default-single-cycle" => build_default_system()
     case "single-cycle" => build_default_system()
+    case "pipelined" => build_default_system()
     case "system1" => build_system_1()
     case "system2" => build_system_2()
     case "system3" => build_system_3()
