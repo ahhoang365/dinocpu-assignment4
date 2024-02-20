@@ -128,6 +128,11 @@ class PipelinedNonCombinCPU(implicit val conf: CPUConfig) extends BaseCPU {
   // From memory back to fetch. Since we don't decide whether to take a branch or not until the memory stage.
   val jump_to_pc = Wire(UInt(64.W))
 
+  //printf(p"${cycleCount} pc=${Hexadecimal(pc)} [${Hexadecimal(if_id.io.data.pc)} | ${Hexadecimal(id_ex.io.data.pc)} | ${Hexadecimal(ex_mem.io.data.pc)} | ${Hexadecimal(mem_wb.io.data.pc)}]\n")
+  //when (mem_wb.io.data.valid_inst) {
+  //  printf(p"0x${Hexadecimal(mem_wb.io.data.pc)}\n")
+  //}
+
   /////////////////////////////////////////////////////////////////////////////
   // FETCH STAGE
   /////////////////////////////////////////////////////////////////////////////
@@ -155,6 +160,9 @@ class PipelinedNonCombinCPU(implicit val conf: CPUConfig) extends BaseCPU {
   when (io.imem.ready & io.imem.valid) {
     fetch_pc := pc
   }
+
+  //printf(p"imem.valid: ${io.imem.valid} imem.good:  ${io.imem.good}\n")
+  //printf(p"dmem.valid: ${io.dmem.valid} dmem.good:  ${io.dmem.good}\n")
 
   // Fill the IF/ID register
   when ((pc % 8.U) === 4.U) {
