@@ -35,11 +35,11 @@ import chisel3._
  
 class HazardUnitNonCombin extends Module {
   val io = IO(new Bundle {
-    val rs1           = Input(UInt(5.W))
-    val rs2           = Input(UInt(5.W))
-    val idex_memread  = Input(Bool())
-    val idex_rd       = Input(UInt(5.W))
-    val exmem_taken   = Input(Bool())
+    val rs1           = Input(UInt(5.W)) //
+    val rs2           = Input(UInt(5.W)) //
+    val idex_memread  = Input(Bool())    //
+    val idex_rd       = Input(UInt(5.W)) //
+    val exmem_taken   = Input(Bool())    //
     val exmem_meminst = Input(Bool())
     val imem_ready    = Input(Bool())
     val imem_good     = Input(Bool())
@@ -68,7 +68,44 @@ class HazardUnitNonCombin extends Module {
   io.ex_mem_flush := false.B
   io.mem_wb_stall := false.B
   io.mem_wb_flush := false.B
+  
+   when(io.exmem_taken===true.B ){
+     io.pcfromtaken  := true.B
+     io.id_ex_flush  := true.B
+     io.ex_mem_flush := true.B
+     io.if_id_flush  := true.B
+    
 
-  // Your code goes here
+  }.elsewhen(io.idex_memread  && (io.idex_rd === io.rs1 || io.idex_rd === io.rs2)){
+     io.pcstall      := true.B
+     io.if_id_stall  := true.B
+     io.id_ex_flush  := true.B
+   
+  } .elsewhen(~io.imem_ready){
+     io.pcstall      := true.B
+     when(io.exmem_taken){
+        io.ex_mem_stall:=true.B
+        io.ex_mem_flush := false.B
+     }
+  }.elsewhen(~io.imem_good){
+    io.if_id_flush:= true.B
+    when(io.exmem_meminst) {
+      io.ex_mem_stall:= true.B
+      }
+    when(~io.exmem_taken){io.pcstall:=true.B}
+  }.elsewhen(~io.dmem_good){ //stall all
+     io.pcstall      := true.B
+     io.if_id_stall  := true.B
+     io.id_ex_stall  := true.B
+     io.ex_mem_stall := true.B
+     io.mem_wb_stall := true.B
+  
+  
+  }
+
+  
+
+
+
 
 }

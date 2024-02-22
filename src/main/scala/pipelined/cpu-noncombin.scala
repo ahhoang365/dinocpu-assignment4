@@ -393,7 +393,9 @@ class PipelinedNonCombinCPU(implicit val conf: CPUConfig) extends BaseCPU {
     (mem_wb_ctrl.io.data.wb_ctrl.writeback_src === 2.U) -> mem_wb.io.data.sextImm,
     (mem_wb_ctrl.io.data.wb_ctrl.writeback_src === 3.U) -> mem_wb.io.data.mem_readdata
   ))
+
   registers.io.writedata := wb_writedata
+  print(mem_wb_ctrl.io.data.wb_ctrl.writeback_src)
   // Set the input signals for the forwarding unit (SKIP FOR PART I)
 
 }
